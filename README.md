@@ -27,10 +27,7 @@ NOTE: Will need to use python version >= 3.11
 
 Run the App
 
-Open two terminals:
-
-1. Terminal: Start the Flask server  
-    python app.py
+Open terminal:
     
-2. Terminal: Start the mouse interaction script
+1. Terminal: Start the mouse interaction script
     python mouse_demo.py
