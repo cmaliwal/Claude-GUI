@@ -3,7 +3,7 @@ About Mini app where Claude moves the mouse to interact with an HTML page, and u
 
 To install and set up the project locally, follow these steps:
 
-NOTE: Will need to use python version >= 3.11 
+⚠️ **Note:** Python version **>= 3.11** is required.
 
 1. Create and activate the virtual environment 
  ```bash
@@ -31,3 +31,23 @@ Open terminal:
     
 1. Terminal: Start the mouse interaction script
     python mouse_demo.py
+
+Claude will:
+
+- Start the Flask app in the background.
+- Take screenshots to understand what's on screen.
+- Launch (or attempt to launch) Firefox.
+-Try to interact with the GUI using the tools.
+
+### 📌 Current Status
+
+✅ Screenshot functionality works.
+✅ Claude can visually recognize the interface and describe UI components.
+✅ Firefox can be launched using the bash tool.
+❌ Mouse clicks via the computer tool are being invoked but do not yet trigger actual interactions.
+
+### Future Scope of Improvements
+
+Here’s what we plan to improve or implement next:
+- Make mouse click actions actually affect the browser (functional GUI interaction)
+- Detect and interact with GUI elements based on visual position or text (e.g., click "Yes" button by name)
