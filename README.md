@@ -3,7 +3,7 @@ About Mini app where Claude moves the mouse to interact with an HTML page, and u
 
 To install and set up the project locally, follow these steps:
 
-⚠️ **Note:** Python version **>= 3.11** is required.
+**Note:** Python version **>= 3.11** is required.
 
 1. Create and activate the virtual environment 
  ```bash
@@ -23,14 +23,16 @@ To install and set up the project locally, follow these steps:
 
 3. Create your .env file using env.example:
     ```bash
-        cp example .env
-
+        cp example.env .env
+    ```  
 Run the App
 
 Open terminal:
     
 1. Terminal: Start the mouse interaction script
+    ```bash
     python mouse_demo.py
+    ```
 
 Claude will:
 
@@ -39,12 +41,12 @@ Claude will:
 - Launch (or attempt to launch) Firefox.
 -Try to interact with the GUI using the tools.
 
-### 📌 Current Status
+### Current Status
 
-✅ Screenshot functionality works.
-✅ Claude can visually recognize the interface and describe UI components.
-✅ Firefox can be launched using the bash tool.
-❌ Mouse clicks via the computer tool are being invoked but do not yet trigger actual interactions.
+- Screenshot functionality works.
+- Claude can visually recognize the interface and describe UI components.
+- Firefox can be launched using the bash tool.
+- Mouse clicks via the computer tool are being invoked but do not yet trigger actual interactions.
 
 ### Future Scope of Improvements
 
