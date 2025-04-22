@@ -48,6 +48,9 @@ Claude will:
 - Firefox can be launched using the bash tool.
 - Mouse clicks via the computer tool are being invoked but do not yet trigger actual interactions.
 
+[Screencast from 04-21-2025 06_46_17 PM.webm](https://github.com/user-attachments/assets/ea08f238-799d-41d0-8ea3-a72b8ea79f39)
+
+
 ### Future Scope of Improvements
 
 Here’s what we plan to improve or implement next:
