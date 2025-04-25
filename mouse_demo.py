@@ -55,8 +55,14 @@ def stop_flask_server():
         print("Stopping Flask server...")
         if sys.platform == "win32":
             flask_process.terminate()
-        else:
-            os.killpg(os.getpgid(flask_process.pid), signal.SIGTERM)
+        elif sys.platform == "darwin":  # macOS
+            flask_process.terminate()
+        else:  # Linux/Unix
+            try:
+                os.killpg(os.getpgid(flask_process.pid), signal.SIGTERM)
+            except (AttributeError, ProcessLookupError, OSError):
+                # Fall back to terminate if killpg fails
+                flask_process.terminate()
         flask_process = None
         print("Flask server stopped.")
 

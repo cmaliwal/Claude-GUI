@@ -7,6 +7,7 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Literal, TypedDict, cast, get_args
 from uuid import uuid4
+import platform
 
 from anthropic.types.beta import BetaToolComputerUse20241022Param, BetaToolUnionParam
 
@@ -114,6 +115,10 @@ class BaseComputerTool:
         self.width = int(os.getenv("WIDTH") or 1200)
         self.height = int(os.getenv("HEIGHT") or 800)
         assert self.width and self.height, "WIDTH, HEIGHT must be set"
+        
+        # Check if we're on macOS
+        self.is_macos = platform.system() == "Darwin"
+        
         if (display_num := os.getenv("DISPLAY_NUM")) is not None:
             self.display_num = int(display_num)
             self._display_prefix = f"DISPLAY=:{self.display_num} "
@@ -121,7 +126,16 @@ class BaseComputerTool:
             self.display_num = None
             self._display_prefix = ""
 
+        # On macOS, check if xdotool is installed, and set a warning if not
         self.xdotool = f"{self._display_prefix}xdotool"
+        if self.is_macos:
+            import subprocess
+            try:
+                subprocess.run(["which", "xdotool"], check=True, capture_output=True)
+            except subprocess.CalledProcessError:
+                print("WARNING: xdotool is not installed on your macOS system.")
+                print("Please install it using Homebrew: 'brew install xdotool'")
+                print("Mouse interactions may not work until xdotool is installed.")
 
     async def __call__(
         self,

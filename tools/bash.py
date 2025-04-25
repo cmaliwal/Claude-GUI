@@ -1,5 +1,7 @@
 import asyncio
 import os
+import sys
+import platform
 from typing import Any, Literal
 
 from .base import BaseAnthropicTool, CLIResult, ToolError, ToolResult
@@ -11,7 +13,8 @@ class _BashSession:
     _started: bool
     _process: asyncio.subprocess.Process
 
-    command: str = "/bin/bash"
+    # Choose the bash path based on the platform
+    command: str = "/usr/bin/bash" if platform.system() == "Darwin" else "/bin/bash"
     _output_delay: float = 0.2  # seconds
     _timeout: float = 120.0  # seconds
     _sentinel: str = "<<exit>>"
@@ -19,14 +22,42 @@ class _BashSession:
     def __init__(self):
         self._started = False
         self._timed_out = False
+        
+        # If the default bash path doesn't exist, try to find bash
+        if not os.path.exists(self.command):
+            # Try common bash locations
+            possible_paths = [
+                "/bin/bash",
+                "/usr/bin/bash",
+                "/usr/local/bin/bash"
+            ]
+            
+            for path in possible_paths:
+                if os.path.exists(path):
+                    self.command = path
+                    break
+            else:
+                # If bash is still not found, try to get it from the environment
+                try:
+                    # Use 'which bash' to find the bash executable
+                    import subprocess
+                    result = subprocess.run(["which", "bash"], capture_output=True, text=True)
+                    if result.returncode == 0 and result.stdout.strip():
+                        self.command = result.stdout.strip()
+                except:
+                    # If all else fails, keep the default and let it fail with proper error
+                    pass
 
     async def start(self):
         if self._started:
             return
 
+        # On macOS, os.setsid can cause issues, so we only use it on Unix/Linux systems
+        preexec_fn = os.setsid if platform.system() != "Darwin" else None
+        
         self._process = await asyncio.create_subprocess_shell(
             self.command,
-            preexec_fn=os.setsid,
+            preexec_fn=preexec_fn,
             shell=True,
             bufsize=0,
             stdin=asyncio.subprocess.PIPE,
